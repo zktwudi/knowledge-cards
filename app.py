@@ -4,7 +4,8 @@ import json
 import os
 
 app = Flask(__name__)
-
+# 初始化数据库
+database.init_db()
 
 @app.route('/')
 def index():
@@ -86,8 +87,7 @@ def edit_card(card_id):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    # 初始化数据库
-    database.init_db()
+
     # 本地开发用 debug 模式，部署时 Render 会用 gunicorn 启动
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
