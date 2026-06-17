@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑卡片</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; }
+    </style>
+</head>
+<body>
+    <h1>✏️ 编辑卡片 #{{ card.id }}</h1>
+    <form method="post" action="/edit/{{ card.id }}">
+        <p>标题: <input type="text" name="title" value="{{ card.title }}" required></p>
+        <p>内容: <br><textarea name="content" rows="4" required>{{ card.content }}</textarea></p>
+        <button type="submit">💾 保存修改</button>
+    </form>
+    <a href="/">← 返回首页</a>
+</body>
+</html>
