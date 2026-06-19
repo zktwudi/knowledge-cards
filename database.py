@@ -1,12 +1,34 @@
+import os
 import sqlite3
+from dotenv import load_dotenv
 
-DB_FILE = 'cards.db'
+load_dotenv()
 
-def get_connection():
-    """获取数据库连接"""
-    conn = sqlite3.connect(DB_FILE)
-    conn.row_factory = sqlite3.Row  # 让返回的行可以像字典一样访问
-    return conn
+TURSO_URL = os.getenv("TURSO_URL")
+TURSO_TOKEN = os.getenv("TURSO_TOKEN")
+
+# 数据库连接选择
+if TURSO_URL and TURSO_TOKEN:
+    print("Using Turso database")
+    import libsql_client
+    def get_connection():
+        """
+        Turso连接
+        """
+        return libsql_client.create_client(
+            url=TURSO_URL,
+            auth_token=TURSO_TOKEN
+        )
+    DB_MODE = "turso"
+else:
+    print("Using local SQLite database")
+    DB_FILE = "cards.db"
+    def get_connection():
+        conn = sqlite3.connect(DB_FILE)
+        conn.row_factory = sqlite3.Row
+        return conn
+    DB_MODE = "local"
+
 
 def init_db():
     """初始化数据库：建表（如果不存在）"""
